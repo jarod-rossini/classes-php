@@ -1,12 +1,9 @@
 <?php
 
-$bdd = new mysqli('localhost', 'root', '', 'classes');
+try{$bdd = new PDO('mysql:host=localhost; dbname=classes', 'root', '');}
+	catch(exception $e){die('Erreur '.$e->getMessage());}
 
-if($bdd->connect_errno){
-	echo 'Connexion échouée'.$bdd->connect_errno.'|'.$bdd->connect_error;
-}
-
-class user{
+class userpdo{
 	private $id;
 	public $login;
 	public $email;
@@ -29,7 +26,7 @@ class user{
 		$queryconnect = $bdd->query('SELECT * FROM utilisateurs WHERE login="'.$_POST['login'].'"');
 		$table2 = $bdd->query('SELECT login, password FROM utilisateurs WHERE login ="'.$login.'"');
 		
-		if(mysqli_num_rows($table) == 0){
+		if($table->rowCount() == 0){
 			echo 'login ou mot de passe incorrect';
 		}
 		else{
